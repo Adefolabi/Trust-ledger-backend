@@ -13,10 +13,23 @@ contract budget {
         APROVED,
         REJECTED
     }
+    struct request {
+         uint256 id;
+    address requester;   // who submitted
+    string purpose;      // why money is needed
+    address recipient;   // who gets paid
+    uint256 amount;      // how much
+    bool approved;       // status
+    bool rejected;
+    }
     // state variable
     mapping(address => bool) public isAdmin;
     address[] public adminList;
 
     // functions
+    function submitRequest() external {}
+    function approveRequest() external {}
+    function rejectRequest() external{}
     // getters
+    function getAdmins() pure view returns(a)
 }
