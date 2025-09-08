@@ -1,15 +1,13 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.20;
 
-
 error budget_NotAdmin();
 contract Budget {
-/**
- * @title Budget Contract
- * @author Adefolabi
- * @dev This contract manages a budget with functionalities to set, get, and update.
- */
-
+    /**
+     * @title Budget Contract
+     * @author Adefolabi
+     * @dev This contract manages a budget with functionalities to set, get, and update.
+     */
 
     // type declaration
     enum RequestStatus {
@@ -19,11 +17,11 @@ contract Budget {
     }
 
     struct BudgetRequest {
-        uint256 id;          
-        address requester;   
-        string purpose;      
-        address recipient;   
-        uint256 amount;      
+        uint256 id;
+        address requester;
+        string purpose;
+        address recipient;
+        uint256 amount;
         RequestStatus status;
     }
 
@@ -74,7 +72,7 @@ contract Budget {
 
     // ADMIN MANAGEMENT
     function addAdmin(address _newAdmin) public onlyAdmin {
-        require(!isAdmin[_newAdmin], "Already an admin");     
+        require(!isAdmin[_newAdmin], "Already an admin");
         isAdmin[_newAdmin] = true;
         adminList.push(_newAdmin);
         emit AdminAdded(_newAdmin);
@@ -82,7 +80,7 @@ contract Budget {
 
     function removeAdmin(address _admin) public onlyAdmin {
         require(isAdmin[_admin], "Not an admin");
-        require(_admin != msg.sender, "Cannot remove yourself");  
+        require(_admin != msg.sender, "Cannot remove yourself");
 
         isAdmin[_admin] = false;
 
@@ -123,10 +121,13 @@ contract Budget {
         requestCount++;
     }
 
-    // approve request 
+    // approve request
     function approveRequest(uint256 _id) public onlyAdmin {
         BudgetRequest storage request = allRequest[_id];
-        require(request.status == RequestStatus.PENDING, "Request already processed");
+        require(
+            request.status == RequestStatus.PENDING,
+            "Request already processed"
+        );
 
         request.status = RequestStatus.APPROVED;
 
@@ -139,10 +140,13 @@ contract Budget {
         );
     }
 
-    // reject request 
+    // reject request
     function rejectRequest(uint256 _id) public onlyAdmin {
         BudgetRequest storage request = allRequest[_id];
-        require(request.status == RequestStatus.PENDING, "Request already processed");
+        require(
+            request.status == RequestStatus.PENDING,
+            "Request already processed"
+        );
 
         request.status = RequestStatus.REJECTED;
 
@@ -159,4 +163,8 @@ contract Budget {
     function getAdmins() public view returns (address[] memory) {
         return adminList;
     }
+    function getRequest(uint256 _id) public view returns (BudgetRequest memory) {
+    return allRequest[_id];
+}
+
 }
