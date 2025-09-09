@@ -2,8 +2,13 @@ require("@nomicfoundation/hardhat-toolbox");
 require("hardhat-deploy");
 require("dotenv").config();
 
-const { PRIVATE_KEY, SEPOLIA_RPC, ETHERSCAN_API_KEY, COINMARKETCAP_API_KEY } =
-  process.env;
+const {
+  PRIVATE_KEY,
+  PRIVATE_KEY2,
+  SEPOLIA_RPC,
+  ETHERSCAN_API_KEY,
+  COINMARKETCAP_API_KEY,
+} = process.env;
 
 module.exports = {
   solidity: "0.8.20",
@@ -15,7 +20,7 @@ module.exports = {
     },
     sepolia: {
       url: SEPOLIA_RPC || "",
-      accounts: PRIVATE_KEY ? [PRIVATE_KEY] : [],
+      accounts: PRIVATE_KEY ? [PRIVATE_KEY, PRIVATE_KEY2] : [],
       chainId: 11155111,
       blockConfirmations: 6,
     },
@@ -31,7 +36,7 @@ module.exports = {
     deployer: {
       default: 0,
     },
-    player: {
+    user1: {
       default: 1,
     },
   },
