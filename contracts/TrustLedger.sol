@@ -163,8 +163,25 @@ contract Budget {
     function getAdmins() public view returns (address[] memory) {
         return adminList;
     }
-    function getRequest(uint256 _id) public view returns (BudgetRequest memory) {
-    return allRequest[_id];
-}
+    function getRequest(
+        uint256 _id
+    ) public view returns (BudgetRequest memory) {
+        return allRequest[_id];
+    }
 
+    function getRequests(
+        uint256 start,
+        uint256 count
+    ) public view returns (BudgetRequest[] memory) {
+        uint256 end = start + count;
+        if (end > requestCount) {
+            end = requestCount;
+        }
+
+        BudgetRequest[] memory result = new BudgetRequest[](end - start);
+        for (uint256 i = start; i < end; i++) {
+            result[i - start] = allRequest[i];
+        }
+        return result;
+    }
 }

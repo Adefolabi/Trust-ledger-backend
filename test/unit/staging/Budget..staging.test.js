@@ -50,7 +50,7 @@ developmentChains.includes(network.name)
         const rejectTx = await Budget.rejectRequest(1); // deployer rejects
         await rejectTx.wait();
 
-        const req = await Budget.allRequest(0);
+        const req = await Budget.allRequest(1);
         expect(req.status.toString()).to.equal("2"); // REJECTED
       });
     });
