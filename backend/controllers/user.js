@@ -4,7 +4,6 @@ const { hashFunction } = require("../utils/utils");
 const getUser = asyncHandler(async (req, res) => {
   const users = await User.find();
   res.status(200).json({ message: users });
-  console.log("users");
 });
 const createUser = asyncHandler(async (req, res) => {
   // hash password
