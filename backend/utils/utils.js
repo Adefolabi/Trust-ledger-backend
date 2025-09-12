@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const crypto = require("crypto");
 
 const hashFunction = async (password) => {
   const salt = await bcrypt.genSalt(10);
@@ -6,4 +7,26 @@ const hashFunction = async (password) => {
   return hashedPassword;
 };
 
-module.exports = { hashFunction };
+const randomnPassword = (length = 12) => {
+  const upper = "ABCDEFGHIJKLMNOPQRSTUVWKXYZ";
+  const lower = "abcdefghijklmnopqrstuvwxyz";
+  const number = "0123456789";
+  const symbols = "!@#$%^&*()-_=+[]{};:,.<>?";
+  let password = "";
+  const allchar = upper + lower + number + symbols;
+
+  password += upper[Math.floor(Math.random() * upper.length)];
+  password += lower[Math.floor(Math.random() * lower.length)];
+  password += number[Math.floor(Math.random() * number.length)];
+  password += symbols[Math.floor(Math.random() * symbols.length)];
+
+  for (let i = 4; i < length; i++) {
+    const randomIndex = crypto.randomInt(0, allchar.length);
+    password += allchar[randomIndex];
+  }
+  return password
+    .split("")
+    .sort(() => 0.5 - Math.random())
+    .join("");
+};
+module.exports = { hashFunction, randomnPassword };

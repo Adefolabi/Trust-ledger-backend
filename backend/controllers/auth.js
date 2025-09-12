@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 require("dotenv").config();
 
 const jwt = require("jsonwebtoken");
+const { randomnPassword, hashFunction } = require("../utils/utils");
 
 const SECRET_KEY = process.env.SECRET_KEY;
 const EXPIRES_IN = process.env.EXPIRES_IN;
@@ -35,4 +36,19 @@ const loginUser = asyncHandler(async (req, res) => {
   });
 });
 
-module.exports = { loginUser };
+const resetPassword = asyncHandler(async (req, res) => {
+  const userId = req.body.id;
+  const userExists = await User.findById(userId);
+  if (!userExists) return res.status(404).json({ message: "User not found" });
+
+  const tempPassword = randomnPassword();
+  const hashedTempPassword = await hashFunction(tempPassword);
+  const updatedUser = await User.findByIdAndUpdate(userId, {
+    password: hashedTempPassword,
+  });
+  console.log(tempPassword);
+  console.log(hashedTempPassword);
+  res.status(200).json({ user: updatedUser });
+});
+
+module.exports = { loginUser, resetPassword };
