@@ -37,17 +37,20 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 const resetPassword = asyncHandler(async (req, res) => {
-  const userId = req.body.id;
-  const userExists = await User.findById(userId);
+  const id = req.params.id;
+  const userExists = await User.findById(id);
+  console.log(userExists);
   if (!userExists) return res.status(404).json({ message: "User not found" });
 
   const tempPassword = randomnPassword();
   const hashedTempPassword = await hashFunction(tempPassword);
-  const updatedUser = await User.findByIdAndUpdate(userId, {
-    password: hashedTempPassword,
-  });
-  console.log(tempPassword);
-  console.log(hashedTempPassword);
+  const updatedUser = await User.findByIdAndUpdate(
+    id,
+    {
+      password: hashedTempPassword,
+    },
+    { new: true },
+  );
   res.status(200).json({ user: updatedUser });
 });
 
