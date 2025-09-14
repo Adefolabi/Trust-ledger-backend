@@ -8,12 +8,13 @@ const {
   rejectRequest,
   createRequest,
 } = require("../controllers/request");
+const validateObjectId = require("../middleware/validateObjectId");
 
 // get rerquest
 
 router.get("/", AUTH, getRequest);
-router.get("/:id", AUTH, getSingleRequest);
-router.post("/:id/approve", AUTH, approveRequest);
-router.post("/:id/reject", AUTH, rejectRequest);
+router.get("/:id", AUTH, validateObjectId(), getSingleRequest);
+router.post("/:id/approve", AUTH, validateObjectId(), approveRequest);
+router.post("/:id/reject", AUTH, validateObjectId(), rejectRequest);
 router.post("/", AUTH, createRequest);
 module.exports = router;

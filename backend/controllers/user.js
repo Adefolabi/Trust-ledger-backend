@@ -4,11 +4,11 @@ const { hashFunction } = require("../utils/utils");
 
 const getUser = asyncHandler(async (req, res) => {
   const users = await User.find();
-  res.status(200).json({ message: users });
+  res.status(200).json({ user: users });
 });
 const getSingleUser = asyncHandler(async (req, res) => {
   const users = await User.findById(req.params.id);
-  res.status(200).json({ message: users });
+  res.status(200).json({ user: users });
 });
 
 const createUser = asyncHandler(async (req, res) => {
@@ -24,7 +24,7 @@ const createUser = asyncHandler(async (req, res) => {
     createdByAdminId: req.user.id,
   });
   await user.save();
-  res.status(200).json({ message: user });
+  res.status(200).json({ user: user });
 });
 
 const suspendUser = asyncHandler(async (req, res) => {

@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const userRouters = require("./routes/user");
 const loginRouters = require("./routes/auth");
 const requestRouters = require("./routes/request");
+const adminRouters = require("./routes/admin");
+const paymentRouter = require("./routes/payment");
 const errorHandler = require("./middleware/errorHandler");
 require("dotenv").config();
 
@@ -16,6 +18,8 @@ app.use(errorHandler);
 app.use(`${API_URL}/users`, userRouters);
 app.use(`${API_URL}/login`, loginRouters);
 app.use(`${API_URL}/requests`, requestRouters);
+app.use(`${API_URL}/admins`, adminRouters);
+app.use(`${API_URL}/payments`, paymentRouter);
 
 // Connect to MongoDB
 mongoose
