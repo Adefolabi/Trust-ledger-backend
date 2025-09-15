@@ -13,5 +13,9 @@
     "hardhat-deploy": "^1.0.4",
     "prettier": "^3.6.2",
     "prettier-plugin-solidity": "^2.1.0"
+  },
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "path": "^0.12.7"
   }
 }

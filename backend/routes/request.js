@@ -7,6 +7,7 @@ const {
   approveRequest,
   rejectRequest,
   createRequest,
+  forwardRequest,
 } = require("../controllers/request");
 const validateObjectId = require("../middleware/validateObjectId");
 
@@ -14,7 +15,10 @@ const validateObjectId = require("../middleware/validateObjectId");
 
 router.get("/", AUTH, getRequest);
 router.get("/:id", AUTH, validateObjectId(), getSingleRequest);
+router.post("/", AUTH, createRequest);
+
+// finace and admin
 router.post("/:id/approve", AUTH, validateObjectId(), approveRequest);
 router.post("/:id/reject", AUTH, validateObjectId(), rejectRequest);
-router.post("/", AUTH, createRequest);
+router.post("/:id/farward", AUTH, validateObjectId(), forwardRequest);
 module.exports = router;

@@ -33,8 +33,15 @@ const requestSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["PENDING", "APPROVED", "REJECTED", "PAID", "FAILED"],
-      default: "PENDING",
+      enum: [
+        "PENDING_FM",
+        "APPROVED",
+        "REJECTED",
+        "PENDING_ADMIN",
+        "PAID",
+        "FAILED",
+      ],
+      default: "PENDING_FM",
     },
     approvedById: {
       type: mongoose.Schema.Types.ObjectId,
