@@ -1,6 +1,8 @@
 const asyncHandler = require("express-async-handler");
 const { User } = require("../models/user");
 const { hashFunction } = require("../utils/utils");
+const PASSWORD = process.env.PASSWORD;
+const { createEncryptedWallet } = require("./orgWallets");
 
 const getAdmin = asyncHandler(async (req, res) => {
   const users = await User.find({ role: "admin" }).select("-password");
@@ -9,8 +11,15 @@ const getAdmin = asyncHandler(async (req, res) => {
 
 const addAdmin = asyncHandler(async (req, res) => {
   const { id } = req.params;
+  console.log(id);
+  const wallet = await createEncryptedWallet(PASSWORD);
 
   if (!id) {
+    const existingUser = await User.findOne({ email: req.body.email });
+    if (existingUser) {
+      return res.status(409).json({ message: "Email already exists" });
+    }
+
     // create new admin
     const hashedPassword = await hashFunction(req.body.password);
     const admin = new User({
@@ -21,6 +30,8 @@ const addAdmin = asyncHandler(async (req, res) => {
       department: req.body.department,
       isActive: req.body.isActive ?? true,
       createdByAdminId: req.user.id,
+      walletAddress: wallet.address,
+      encryptedPrivateKey: wallet.privateKey,
     });
     await admin.save();
     return res.status(201).json({ user: admin });
@@ -29,7 +40,11 @@ const addAdmin = asyncHandler(async (req, res) => {
   // promote existing user
   const updatedUser = await User.findByIdAndUpdate(
     id,
-    { role: "admin" },
+    {
+      role: "admin",
+      walletAddress: wallet.address,
+      encryptedPrivateKey: wallet.privateKey,
+    },
     { new: true },
   );
   if (!updatedUser) {

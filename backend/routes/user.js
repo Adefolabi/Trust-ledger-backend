@@ -17,7 +17,13 @@ router.get("/", AUTH, ADMIN, getUser);
 router.get("/:id", AUTH, ADMIN, validateObjectId(), getSingleUser);
 
 // create user
-router.post("/", AUTH, ADMIN, validateObjectId(), createUser);
+router.post(
+  "/",
+  AUTH,
+  authorizeRoles(["admin","hr"]),
+  validateObjectId(),
+  createUser,
+);
 // activate and suspend user
 router.post("/:id/suspend", AUTH, ADMIN, validateObjectId(), suspendUser);
 router.post("/:id/activate", AUTH, ADMIN, validateObjectId(), activateUser);

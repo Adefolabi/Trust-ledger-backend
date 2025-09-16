@@ -6,6 +6,7 @@ const requestRouters = require("./routes/request");
 const adminRouters = require("./routes/admin");
 const paymentRouters = require("./routes/payment");
 const notificationRouters = require("./routes/notifications");
+const departmentRouters = require("./routes/department");
 const errorHandler = require("./middleware/errorHandler");
 require("dotenv").config();
 
@@ -21,6 +22,7 @@ app.use(`${API_URL}/login`, loginRouters);
 app.use(`${API_URL}/requests`, requestRouters);
 app.use(`${API_URL}/admins`, adminRouters);
 app.use(`${API_URL}/payments`, paymentRouters);
+app.use(`${API_URL}/departments`, departmentRouters);
 app.use(`${API_URL}/notifications`, notificationRouters);
 
 // Connect to MongoDB

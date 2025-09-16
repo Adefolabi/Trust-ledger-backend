@@ -23,7 +23,9 @@ const userSchema = mongoose.Schema(
       default: "user",
     },
     department: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Department",
+      required: [true, "user department is required"],
     },
     isActive: {
       type: Boolean,
@@ -34,6 +36,8 @@ const userSchema = mongoose.Schema(
       ref: "User",
       required: [true, "user creator is required"],
     },
+    walletAddress: { type: String, required: false, unique: true },
+    encryptedPrivateKey: { type: String, required: false },
   },
   {
     timestamps: true,
