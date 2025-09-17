@@ -16,27 +16,6 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
     waitConfirmations: network.config.blockConfirmations || 1,
   });
 
-  log(`✅ Budget deployed at: ${Budget.address}`);
-
-  //  Save ABI + Address for Backend
-  const artifact = await hre.artifacts.readArtifact("Budget");
-  const contractData = {
-    address: Budget.address,
-    abi: artifact.abi,
-    network: network.name,
-  };
-
-  const contractsDir = path.join(__dirname, "../..", "backend/contracts");
-
-  if (!fs.existsSync(contractsDir)) {
-    fs.mkdirSync(contractsDir, { recursive: true });
-  }
-
-  fs.writeFileSync(
-    path.join(contractsDir, "Budget.json"),
-    JSON.stringify(contractData, null, 2),
-  );
-
   //  verification
   if (
     !developmentChains.includes(network.name) &&

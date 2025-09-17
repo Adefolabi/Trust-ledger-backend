@@ -43,9 +43,6 @@ const requestSchema = new mongoose.Schema(
       ],
       default: "PENDING_FM",
     },
-    notes: {
-      type: String,
-    },
     approvedById: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
@@ -56,6 +53,10 @@ const requestSchema = new mongoose.Schema(
       default: null,
     },
     onChainTxHash: {
+      type: String,
+      default: null,
+    },
+    onChainRequestId: {
       type: String,
       default: null,
     },

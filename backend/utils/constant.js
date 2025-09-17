@@ -1,0 +1,7 @@
+// request constant
+const PENDING_ADMIN = "PENDING_ADMIN";
+const PENDING_FM = "PENDING_FM";
+const APPROVED = "APPROVED";
+const REJECTED = "REJECTED";
+
+module.exports = { PENDING_ADMIN, PENDING_FM, APPROVED, REJECTED };

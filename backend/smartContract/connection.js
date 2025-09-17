@@ -1,29 +1,47 @@
+const { ethers } = require("ethers");
 const contractJson = require("../../deployments/localhost/Budget.json");
+const { loadWallet } = require("../utils/orgWallets");
+const { getProvider } = require("../utils/network");
+
 const contractABI = contractJson.abi;
 const contractAddress = contractJson.address;
-const ethers = require("ethers");
+const provider = getProvider();
+const loadWalletFromPrivateKey = (privateKey) => {
+  return new ethers.Wallet(privateKey, provider);
+};
 
-const provider = new ethers.JsonRpcProvider("http://127.0.0.1:8545");
-const signer = new ethers.Wallet(
-  "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80",
-  provider,
-);
+const getWalletForUser = async (user) => {
+  const isLocal = process.env.NETWORK === "local";
 
-const contract = new ethers.Contract(contractAddress, contractABI, signer);
+  if (isLocal) {
+    // Use Hardhat wallets for testing
+    if (user.role === "finance") {
+      return loadWalletFromPrivateKey(process.env.HARDHAT_FINANCE_PRIVATE_KEY);
+    }
+    if (user.role === "admin") {
+      return loadWalletFromPrivateKey(process.env.HARDHAT_ADMIN_PRIVATE_KEY);
+    }
+  }
 
-// async function testConnection() {
-//   const recipient = signer.address;
+  // Use encrypted wallet from DB in live mode
+  if (
+    !user.encryptedPrivateKey ||
+    typeof user.encryptedPrivateKey !== "string"
+  ) {
+    throw new Error("Missing or invalid encrypted wallet");
+  }
 
-//   const tx = await contract.submitRequest(
-//     "Laptop Purchase",
-//     recipient, // valid Ethereum address
-//     1000, // amount
-//   );
-//   await tx.wait();
-//   console.log("✅ Request submitted");
+  const decrypted = await loadWallet(
+    user.encryptedPrivateKey,
+    process.env.PASSWORD,
+  );
+  return decrypted.connect(provider);
+};
 
-//   const requests = await contract.getRequests(0, 10);
-//   console.log("📦 All Requests:", requests);
-// }
+module.exports = { getWalletForUser };
 
-// testConnection().catch(console.error);
+const connect = async (signerToUse = signer) => {
+  return new ethers.Contract(contractAddress, contractABI, signerToUse);
+};
+
+module.exports = { getWalletForUser, connect };

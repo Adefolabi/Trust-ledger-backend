@@ -13,4 +13,17 @@ const loadWallet = async (encryptedJson, password) => {
   const wallet = await Wallet.fromEncryptedJson(encryptedJson, password);
   return wallet;
 };
-module.exports = { createEncryptedWallet, loadWallet };
+
+// get contract logs
+const getLogs = (receipt, contract) => {
+  const eventLog = receipt.logs.find(
+    (log) => log.address.toLowerCase() === contract.target.toLowerCase(),
+  );
+
+  if (!eventLog) {
+    throw new Error("No matching event log found");
+  }
+
+  return (parsedLog = contract.interface.parseLog(eventLog));
+};
+module.exports = { createEncryptedWallet, loadWallet, getLogs };

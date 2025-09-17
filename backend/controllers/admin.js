@@ -2,7 +2,7 @@ const asyncHandler = require("express-async-handler");
 const { User } = require("../models/user");
 const { hashFunction } = require("../utils/utils");
 const PASSWORD = process.env.PASSWORD;
-const { createEncryptedWallet } = require("./orgWallets");
+const { createEncryptedWallet } = require("../utils/orgWallets");
 
 const getAdmin = asyncHandler(async (req, res) => {
   const users = await User.find({ role: "admin" }).select("-password");

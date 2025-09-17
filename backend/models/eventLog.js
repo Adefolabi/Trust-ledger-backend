@@ -6,20 +6,34 @@ const eventSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    rawEvent: {
-      type: mongoose.Schema.Types.Mixed, // can store JSON or any raw object
+    requestId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Request",
       required: true,
     },
-    blockNumber: {
-      type: Number,
+    onChainId: { type: String, required: true },
+    eventEmitter: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
       required: true,
     },
+    emitterAddress: { type: String },
+    contractAddress: { type: String, required: true },
     txHash: {
       type: String,
       required: true,
       index: true, // indexing useful for fast lookups
       unique: true, // if each txHash should only appear once
     },
+    blockNumber: {
+      type: Number,
+      required: true,
+    },
+    rawEvent: {
+      type: mongoose.Schema.Types.Mixed, // can store JSON or any raw object
+      required: true,
+    },
+    eventArgs: { type: mongoose.Schema.Types.Mixed },
     processed: {
       type: Boolean,
       default: false,
@@ -41,4 +55,4 @@ eventSchema.pre("save", function (next) {
 
 const Event = mongoose.model("Event", eventSchema);
 
-export default Event;
+module.exports = Event;

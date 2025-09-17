@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
+const Event = require("../models/eventLog");
 
 const hashFunction = async (password) => {
   const salt = await bcrypt.genSalt(10);
@@ -29,4 +30,29 @@ const randomnPassword = (length = 12) => {
     .sort(() => 0.5 - Math.random())
     .join("");
 };
-module.exports = { hashFunction, randomnPassword };
+
+// event logs
+const logEvent = async ({
+  name,
+  request,
+  user,
+  wallet,
+  contract,
+  receipt,
+  logs,
+}) => {
+  await Event.create({
+    eventName: name,
+    requestId: request._id,
+    eventEmitter: user._id || user.id,
+    emitterAddress: wallet.address,
+    contractAddress: contract.target,
+    txHash: receipt.hash,
+    blockNumber: receipt.blockNumber,
+    onChainId: logs.args.id.toString(),
+    rawEvent: logs,
+    eventArgs: logs.args,
+    onChainId: logs.args.id?.toString(),
+  });
+};
+module.exports = { hashFunction, randomnPassword, logEvent };
