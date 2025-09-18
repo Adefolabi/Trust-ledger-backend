@@ -1,7 +1,7 @@
 const express = require("express");
 const expressAsyncHandler = require("express-async-handler");
 const Wallet = require("../models/wallet");
-const { createEncryptedWallet } = require("../utils/orgWallets");
+const { createEncryptedWallet } = require("../utils/wallet");
 const router = express.Router();
 const PASSWORD = process.env.PASSWORD;
 

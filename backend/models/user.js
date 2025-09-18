@@ -25,7 +25,7 @@ const userSchema = mongoose.Schema(
     department: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Department",
-      required: [true, "user department is required"],
+      // required: [true, "user department is required"],
     },
     isActive: {
       type: Boolean,

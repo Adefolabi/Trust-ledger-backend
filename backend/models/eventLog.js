@@ -9,15 +9,15 @@ const eventSchema = new mongoose.Schema(
     requestId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Request",
-      required: true,
+      // required: true,
     },
-    onChainId: { type: String, required: true },
+    onChainId: { type: String, required: false },
     eventEmitter: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
-    emitterAddress: { type: String },
+    emitterAddress: { type: String, required: true },
     contractAddress: { type: String, required: true },
     txHash: {
       type: String,

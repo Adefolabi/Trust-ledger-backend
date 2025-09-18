@@ -35,24 +35,36 @@ const randomnPassword = (length = 12) => {
 const logEvent = async ({
   name,
   request,
-  user,
+  admin,
   wallet,
   contract,
   receipt,
   logs,
 }) => {
-  await Event.create({
-    eventName: name,
-    requestId: request._id,
-    eventEmitter: user._id || user.id,
-    emitterAddress: wallet.address,
-    contractAddress: contract.target,
-    txHash: receipt.hash,
-    blockNumber: receipt.blockNumber,
-    onChainId: logs.args.id.toString(),
-    rawEvent: logs,
-    eventArgs: logs.args,
-    onChainId: logs.args.id?.toString(),
-  });
+  try {
+    const event = await Event.create({
+      eventName: name,
+      requestId: request?._id || null,
+      eventEmitter: admin?._id || admin?.id || null,
+      emitterAddress: wallet?.address || null,
+      contractAddress: contract?.target || null,
+      txHash: receipt?.hash,
+      blockNumber: receipt?.blockNumber,
+      onChainId: logs?.args?.id?.toString() || null,
+      rawEvent: logs,
+      eventArgs: logs?.args || {},
+    });
+
+    console.log(" Event saved with ID:", event._id);
+    return event;
+  } catch (err) {
+    if (err.code === 11000) {
+      console.warn("Duplicate txHash, skipping insert:", receipt.hash);
+      return await Event.findOne({ txHash: receipt.hash });
+    } else {
+      console.error("Failed to log event:", err);
+      throw err;
+    }
+  }
 };
 module.exports = { hashFunction, randomnPassword, logEvent };

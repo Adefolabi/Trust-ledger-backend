@@ -1,6 +1,6 @@
 const { ethers } = require("ethers");
 const contractJson = require("../../deployments/localhost/Budget.json");
-const { loadWallet } = require("../utils/orgWallets");
+const { loadWallet } = require("../utils/wallet");
 const { getProvider } = require("../utils/network");
 
 const contractABI = contractJson.abi;

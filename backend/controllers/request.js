@@ -1,7 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const { Request } = require("../models/request");
 const Notification = require("../models/notification");
-const { getLogs } = require("../utils/orgWallets");
+const { getLogs } = require("../utils/wallet");
 const { User } = require("../models/user");
 const { connect, getWalletForUser } = require("../smartContract/connection");
 const Wallet = require("../models/wallet");
