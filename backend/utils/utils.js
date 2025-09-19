@@ -32,21 +32,13 @@ const randomnPassword = (length = 12) => {
 };
 
 // event logs
-const logEvent = async ({
-  name,
-  request,
-  admin,
-  wallet,
-  contract,
-  receipt,
-  logs,
-}) => {
+const logEvent = async ({ name, request, admin, contract, receipt, logs }) => {
   try {
     const event = await Event.create({
       eventName: name,
       requestId: request?._id || null,
       eventEmitter: admin?._id || admin?.id || null,
-      emitterAddress: wallet?.address || null,
+      emitterAddress: admin.walletAddress || null,
       contractAddress: contract?.target || null,
       txHash: receipt?.hash,
       blockNumber: receipt?.blockNumber,
